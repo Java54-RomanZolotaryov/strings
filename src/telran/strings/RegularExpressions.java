@@ -18,10 +18,7 @@ public class RegularExpressions {
 	}
 	
 	public static String mobileIsraelPhone() {
-		//TODO
-		//string contains possible Israel mobile phone number
-		//+972-<prefix two digits beginning from 5>-<7 digits of numbers>
-		//<prefix 3 digits beginning from 0, second 5, third any number>-<7 digits of numbers>
-		return null;
+		String regex = "(\\+?972-?|0)5\\d(-?\\d){7}";
+		return regex;
 	}
 }

@@ -1,6 +1,7 @@
 package telran.strings.test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -114,5 +115,56 @@ class RegularExpressionsTest {
 		assertFalse("05112312120000".matches(regex));
 	}
 	
+	@Test
+	void ipV4AddressTrueTest() {
+		String regex = RegularExpressions.ipV4Address();
+		assertTrue("1.2.3.4".matches(regex));
+	}
+	
+	@Test
+	void ipV4AddressFalseTest() {
+		String regex = RegularExpressions.ipV4Address();
+		assertFalse("1.2.3".matches(regex));
+		assertFalse("1 2.3.4".matches(regex));
+		assertFalse("1. 2.3.4".matches(regex));
+		assertFalse("1.2.3.4.5".matches(regex));
+		assertFalse("1.2.3&4".matches(regex));
+	}
+	
+	@Test
+	void simpleArithmeticExpressionTrueTest() {
+		String regex = RegularExpressions.simpleArithmeticExpression();
+		assertTrue("20".matches(regex));
+		assertTrue("20 + 3 /2 * 100".matches(regex));
+		assertTrue("10000 - 1".matches(regex));
+		assertTrue("10000 - 1 ".matches(regex));
+	}
+	
+	@Test
+	void simpleArithmeticExpressionFalseTest() {
+		String regex = RegularExpressions.simpleArithmeticExpression();
+		assertFalse("-20".matches(regex));
+		assertFalse("20 ** 3".matches(regex));
+		assertFalse("20 + 3 /2 * 100 +".matches(regex));
+		assertFalse("20 + 3 //2 * 100 +".matches(regex));
+	}
+	
+	@Test
+	void arithmeticExpressionTrueTest() {
+		String regex = RegularExpressions.arithmeticExpression();
+		assertTrue("(20.5 + abc)*2".matches(regex));
+		assertTrue("(20.5 + abc))*2".matches(regex));
+		assertTrue("(20.5 + abc / 3)*(2".matches(regex));
+		assertTrue("(__)".matches(regex));
+		assertTrue("2 + __".matches(regex));
+	}
+	
+	@Test
+	void arithmeticExpressionFalseTest() {
+		String regex = RegularExpressions.arithmeticExpression();
+		assertFalse("2 + _".matches(regex));
+		assertFalse("2 + a12 * ".matches(regex));
+		assertFalse("(2 + )a12 * ".matches(regex));
+	}
 	
 }
